@@ -12,6 +12,10 @@ const port = process.env.PORT || 3000;
 //This allows us to send JSON to our body
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+  res.status(200).send('Welcome to the main page.')
+})
+
 //CRUD - create read update delete
 app.post('/todos', (req, res) => {
   var todo = new Todo({

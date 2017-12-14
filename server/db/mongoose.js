@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // This will take a few milliseconds...be mindful.
-// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/TodoApp');
-mongoose.connect('mongodb://oryulin:qwer4567@ds139446.mlab.com:39446/todoapp');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/TodoApp');
+// mongoose.connect('mongodb://oryulin:qwer4567@ds139446.mlab.com:39446/todoapp');
 //mongodb://<dbuser>:<dbpassword>@ds139446.mlab.com:39446/todoapp
 
 // console.log('Connecting to database:',process.env.MONGODB_URI || 'mongodb://localhost:27017/TodoApp')

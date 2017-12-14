@@ -1,16 +1,18 @@
 const expect = require('expect');
 const request = require('supertest');
 
+const {ObjectID} = require('mongodb');
+
 const {app} = require('./../server');
 const {Todo} = require('./../models/todo');
 const {User} = require('./../models/user');
 
 const todos = [{
-  text: "test1"
-  //first object
+  _id: new ObjectID(),
+  text: 'test case 1'
 }, {
-  text: "test2"
-  //second object
+  _id: new ObjectID(),
+  text: 'test case 2'
 }];
 
 // This deletes all items in the database before utilizing the test cases:
@@ -67,16 +69,39 @@ describe('POST /todos', () => {
 });
 
 describe('GET /todos', () => {
-  describe('Gathering all todos', () => {
-    it('should retrieve all todos from the database', (done) => {
+  it('should retrieve all todos from the database', (done) => {
+    request(app)
+      .get('/todos')
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todos.length).toBe(2);
+      })
+      .end(done);
+  })
+});
+
+describe('GET /todos/:id', () => {
+    it('should retrieve a todo by id', (done) => {
       request(app)
-        .get('/todos')
-        .send()
+        .get(`/todos/${todos[0]._id.toHexString()}`)
         .expect(200)
         .expect((res) => {
-          expect(res.body.todos.length).toBe(2);
+          expect(res.body.todo.text).toBe(todos[0].text);
         })
-        .end(done());
+        .end(done);
+    });
+
+    it('should return 404 if todo not found', (done) => {
+      request(app)
+        .get(`/todos/${new ObjectID().toHexString()}`)
+        .expect(404)
+        .end(done);
+    });
+
+    it('should return 404 if todo not found', (done) => {
+      request(app)
+        .get('/todos/123')
+        .expect(404)
+        .end(done);
     })
-  });
 });

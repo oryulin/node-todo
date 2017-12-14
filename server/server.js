@@ -36,16 +36,16 @@ app.get('/todos/:id', (req, res) => {
   var id = req.params.id;
 
   if(!ObjectID.isValid(id)) {
-    return res.status(400).send("Invalid id.")
+    return res.status(404).send("Invalid id.")
   }
 
   Todo.findById(req.params.id).then((todo) => {
     if(!todo) {
-      return res.status(400).send("ID does not exist.");
+      return res.status(404).send("ID does not exist.");
     }
     res.status(200).send({todo});
   }, (err) => {
-    res.status(400).send(err);
+    res.status(404).send(err);
   });
 });
 
@@ -53,4 +53,4 @@ app.listen(3000, () => {
   console.log(`Started on port 3000`)
 });
 
-module.exports.app = app;
+module.exports = {app};
